@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Vegetation Departure – LANDFIRE-Powered Landscape Assessment</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-6b423f165eeea3787de40cb4f8e821c3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-e8964db687007ca8dd88d9d9ce58e3ef.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-6b423f165eeea3787de40cb4f8e821c3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+
+<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
+
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="styles-darkly.css">
+<link rel="stylesheet" href="styles-flatly.css">
+</head>
+
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">LANDFIRE-Powered Landscape Assessment</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./past.html"> 
+<span class="menu-text">Past</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./present.html"> 
+<span class="menu-text">Present</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./departure.html" aria-current="page"> 
+<span class="menu-text">Departure</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#biophysical-settings-and-succession-classes-within-the-vegetation-departure-calculation" id="toc-biophysical-settings-and-succession-classes-within-the-vegetation-departure-calculation" class="nav-link active" data-scroll-target="#biophysical-settings-and-succession-classes-within-the-vegetation-departure-calculation">Biophysical Settings and Succession Classes within the Vegetation Departure calculation</a></li>
+  <li><a href="#succession-class-descriptions" id="toc-succession-class-descriptions" class="nav-link" data-scroll-target="#succession-class-descriptions">Succession Class Descriptions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Vegetation Departure</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="biophysical-settings-and-succession-classes-within-the-vegetation-departure-calculation" class="level3">
+<h3 class="anchored" data-anchor-id="biophysical-settings-and-succession-classes-within-the-vegetation-departure-calculation">Biophysical Settings and Succession Classes within the Vegetation Departure calculation</h3>
+<p>Using LANDFIRE’s Biophysical Settings spatial data to essentially map ‘ecosystem habitats’ and state-and-transition models to estimate the expected historical amounts of their succession classes we can estimate reference conditions under natural disturbance regimes. We can then quantify current succession class amounts with LANDFIRE’s succession class data. Below are succession class charts that allow for an exploration of which classes are over or under represented.</p>
+<p>LANDFIRE’s Succession Classes Product:</p>
+<blockquote class="blockquote">
+<p><em>characterizes current vegetation conditions with respect to the vegetation species composition (leaf-form and life-form, primarily), cover, and height ranges of the successional states that occur within each Biophysical Settings (BPS). SClass can also represent uncharacteristic vegetation components, including exotic species, tree plantations, canopy cover, etc. These components are not found within the compositional or structural variability of successional states defined for a BPS.</em> <a href="https://www.landfire.gov/vegetation/sclass" target="blank">Read more</a>.</p>
+</blockquote>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="departure_files/figure-html/sclass chart-1.png" class="img-fluid figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="succession-class-descriptions" class="level2">
+<h2 class="anchored" data-anchor-id="succession-class-descriptions">Succession Class Descriptions</h2>
+<p>Below is a table of the Succession Class descriptions for the Biophysical Settings charted above. For complete Biophysical Settings descriptions see links on <a href="./past.html" target="blank">Past</a> page.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-4f73681d3de5c087fe19" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-4f73681d3de5c087fe19">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34"],["Southern Rocky Mountain Ponderosa Pine Woodland - South","Southern Rocky Mountain Ponderosa Pine Woodland - South","Southern Rocky Mountain Ponderosa Pine Woodland - South","Southern Rocky Mountain Ponderosa Pine Woodland - South","Southern Rocky Mountain Ponderosa Pine Woodland - South","Southern Rocky Mountain Pinyon-Juniper Woodland","Southern Rocky Mountain Pinyon-Juniper Woodland","Southern Rocky Mountain Pinyon-Juniper Woodland","Southern Rocky Mountain Pinyon-Juniper Woodland","Inter-Mountain Basins Mixed Salt Desert Scrub","Inter-Mountain Basins Mixed Salt Desert Scrub","Inter-Mountain Basins Mixed Salt Desert Scrub","Rocky Mountain Lower Montane-Foothill Shrubland","Rocky Mountain Lower Montane-Foothill Shrubland","Rocky Mountain Lower Montane-Foothill Shrubland","Western Great Plains Sandhill Steppe","Western Great Plains Sandhill Steppe","Western Great Plains Sandhill Steppe","Rocky Mountain Gambel Oak-Mixed Montane Shrubland","Rocky Mountain Gambel Oak-Mixed Montane Shrubland","Rocky Mountain Gambel Oak-Mixed Montane Shrubland","Southern Rocky Mountain Juniper Woodland and Savanna","Southern Rocky Mountain Juniper Woodland and Savanna","Southern Rocky Mountain Juniper Woodland and Savanna","Southern Rocky Mountain Juniper Woodland and Savanna","Southern Rocky Mountain Juniper Woodland and Savanna","Western Great Plains Foothill and Piedmont Grassland","Western Great Plains Foothill and Piedmont Grassland","Western Great Plains Shortgrass Prairie","Western Great Plains Shortgrass Prairie","Western Great Plains Shortgrass Prairie","Western Great Plains Floodplain Systems","Western Great Plains Floodplain Systems","Western Great Plains Floodplain Systems"],["10541_27","10541_27","10541_27","10541_27","10541_27","10590_27_33","10590_27_33","10590_27_33","10590_27_33","10810_27_33","10810_27_33","10810_27_33","10860_27_31_33","10860_27_31_33","10860_27_31_33","10940_27_33","10940_27_33","10940_27_33","11070_27_33","11070_27_33","11070_27_33","11190_27","11190_27","11190_27","11190_27","11190_27","11470_27_33","11470_27_33","11490_27_38","11490_27_38","11490_27_38","11620_27_33","11620_27_33","11620_27_33"],["A","B","C","D","E","A","B","C","D","A","B","C","A","B","C","A","B","C","A","B","C","A","B","C","D","E","A","B","A","B","C","A","B","C"],["Early1:ALL","Mid1:OPN","Mid1:CLS","Late1:OPN","Late1:CLS","Early1:OPN","Mid1:OPN","Mid1:CLS","Late1:CLS","Early1:ALL","Mid1:OPN","Mid2:OPN","Early1:ALL","Mid1:CLS","Late1:CLS","Early1:OPN","Mid1:CLS","Mid1:OPN","Early1:ALL","Mid1:CLS","Late1:CLS","Early1:ALL","Mid1:OPN","Mid1:CLS","Late1:CLS","Late1:OPN","Early1:ALL","Late1:CLS","Mid1:OPN","Mid2:CLS","Mid3:CLS","Early1:ALL","Mid1:OPN","Late1:CLS"],["Bunchgrass - dominated . Dominant lifeform will be herbaceous, with &lt; 50% canopy cover and height of 0 .4m. Most of the ground will be litter and bare ground and rock. Annual forbs come in right after fire but do not last for a long time. Some ponderosa pine individuals also becoming established. Establishment has been historically episodic in many locations around the west, and there are likely lags in timing of recruitment (Teague 2004). Typically, 2-3yrs of above - average moisture will get the seedlings started. There will be fire in this stage that will, over time, cull out some of the ponderosa pine seedlings. Low - severity fire occurs because trees are the overstory. Drought (modeled as wind/weather/  stress) would open up areas - - could then be subject to pinyon-juniper invasion. Seedling recruitment of PIPO would decrease during drought. Alternate succession could take this class to the closed mid development stage - - based on where seedlings have sprouted up - - in rockier areas or not.","Small a nd medium - sized ponderosa pine , with moderate bunchgrass cover. Dominant lifeform will be herbaceous, with canopy cover up to 50% cover and height of 1m . Some settings exhibited scattered oak motts . This is the highest producing stage for the herbaceous vegetation. Resistant to erosion by wind and water in this class as well. This is also the best water-producing stage for springs and seeps. There will be maintenance fires on a periodic basis (every 10-15yrs) , which will suppress ponderosa pine regeneration and pinyon - juniper invasion and algerita expansion. (Currently, that is occurring without active management.). The trees that have established in this class in recent decades have escaped the effects of the maintenance fires. Maintenance low - severity fires and nutrient cycling actually enhance growth in this class and therefore accelerate succession. Thus , alternate succession was also modeled with a probability similar to low - severity fires. Replacement fires occurred rarely. Insect and disease incidence favors open canopy conditions  but does not cause a state change. Drought has less impact than in savanna because of large rocks that concentrate water to roots of trees.","Small and medium - sized ponderosa pine. This is a \"closed\" stage but still not completely closed due to the rocky nature. This class occurs due to stony nature of soil, wider spacing of vegetation - - doesn't get as much fire influence - - doesn't carry fire as well. So more densely stocked, more disease-prone trees . Becomes stagnant more quick ly . This becomes even more prominent in the late development stage.","This class represents the end stage of gap succession where frequent maintenance fires continue to cycle nutrients. Large and very large old ponderosa pine overtopped a medium-high cover of bunchgrasses or, on some settings, shrubs. Old - growth attributes included occasional down wood, snags, and diseased trees. Disease more prevalent in mature stands. Maintenance burns still occurring. Catastrophic replacement fires, if present, occurred on extremely long intervals. The proportion of the late-open class would presumably be higher than any mixed conifer system due to the frequency of surface fire and the rarity of stand - replacement fire. The majority of ponderosa pine woodlands in the southwest were open and multi-storied due to the site potential and the high frequency of surface fires (Jack Triepke , USFS, pers onal comm unication ). This class was originally modeled by modelers with 41-50% cover as a \"healthy\" stage; however, that concept was questioned by others; cover was changed to 11-40% cover to be more consistent with models from other MZs .","This class was originally modeled as a disclimax \"unhealthy\" stage &gt;149yrs with lower cover, 31-40%, than the C lass D other late stage. Original modelers stated the following: it was a late development stage but in the stage due to the rocky soils. The rocky soils don't allow the maintenance fires to carry through this stage; therefore, nutrients don't cycle, and weak/diseased trees stay in the system. There is slightly less canopy cover in this stage versus the other late development open stage. This difference is significant in terms of fire regime; therefore, even though canopy distinction is very small, the modelers decided to keep this stage. However, because reviewers disagreed with that concept, that understanding of this class was rejected and changed c over was changed from 31-40% to 41-50%. Due to lack of fire to redistribute nutrients, trees continue to accumulate available nutrients, moisture. Therefore, the understory herbaceous species are greatly diminished. D ead and downed material common on the ground.","There would be very little of this class historically. Initial post-fire community grass and shrub dominated , consisting of mountain mahogany with G ambel oak sprouts, blue grama , little bluestem, western wheatgrass, stipas , and various forbs . Pinyon and juniper seedlings and saplings will be in low density. Grasses: min, 0%; max, 20%. Shrub cover max would probably be 15%. Tree cover would be &lt;10%. Evidence of past fires may be observed, including charcoal and resprouting woody plants. Trees exert very little influence until later age classes . Replacement fire occurs every few centuries . Currently Russian thistle, an exotic, is a major post - disturbance component , but depends o n post-fire climatic conditions. Another increaser is snakeweed post-fire , given right moisture regime. Original modelers stated that there could be grass-replacement fires , but they don â€™t set succession back to zero ; it keeps progressing. Replacement fire could kill juniper seedlings . Drought maintains the class but doesn â€™ t set it back to the beginning.","Young juniper saplings are increasing and growing. Grass and shrubs are still dominant. Grass species that would be present are blue grama , little bluestem, western wheatgrass , and  stipas . Pinyon seedlings delayed until shade occurs for better growth. Original MZ27 modelers felt that this stage could be maintained for a long period with frequent, low - severity fires, as well as erratic moisture and burning by Native Americans. Surface/low - severity fire occurs in this class because there is still juniper canopy cover that is perhaps not all top - killed. Mixed - severity fire also occurs because sometimes grass density is sufficient to result in pinyon and juniper scorch as well as mortality. Replacement fire occur s infrequently . A heavy moisture cycle increases seedling production, and juveniles mat ure. Drought occurs but does not cause a transition.","Junipers reaching pole  size, and pinyon pine seedlings and saplings are growing dependent on rainfall patterns and shade. Pinyon having rapid growth in this stage. Gambel oak is also forming stand patches. Thinning effect for mountain mahogany due to space/nutrient competition. Very little recrui tment of junipers in this stage . The closed-canopy pinyon-juniper stands are more scattered or localized based on soil or geologic circumstances. There could also be an elevation or moisture gradient that influences closed-canopy conditions (Gonzalez, pers. comm.). Closed-canopy pinyon- oneseed juniper stands appear common in limestone soils, with surface bedrock or high amounts of stony surface. Similar occurrences have been in the Lincoln National Forest (Sacramento District, along Westside road) as well as Apache National Forest (north of Clifton, Arizona). The Apache National Forest site was limestone and also had a mix of Nolina , mahogany, and other shrubs, and occasional Arizona cypress mixed in, but definitely closed canopy. Rhyolitic soils may also support same kind of stands; not much underneath, but closed canopy. The sandstone- and basalt-derived soils appear more open; closed canopy is another anomaly.","Mature juniper mixed with maturing pinyon. Understory declining due to canopy closing. Small amount of fine fuels. Original modelers stated that , historically, would still be having cyclic understory surface fires ( s urface fire occurs every 30yrs, maintaining this stage), and herbaceous component still continuous, though not as dense as previous classes. However, all reviewers for MZ27 disagreed with this concept and felt it was more common in 1119; therefore, low - severity fire was modeled infrequently. There is a shift in dominance from juniper to pinyon. Pinyon would be susceptible to drought mortality, disease, insects. In the tree - size class field, DBH is defined by diameter at root collar for multi-stem species (JUMO). Mistletoe might also be influenced by drought , but not modeled due to lack of info rmation . The closed-canopy pinyon-juniper stands are more scattered or localized based on soil or geologic circumstances. There could also be an elevation or moisture gradient that influences closed-canopy conditions (Gonzalez, pers. comm.). Closed-canopy pinyon- oneseed juniper stands appear common in limestone soils, with surface bedrock or high amounts of stony surface. Similar occurrences have been in the Lincoln National Forest (Sacramento District, along Westside road) as well as Apache National Forest (north of Clifton, Arizona). The Apache National Forest site was limestone and also had a mix of Nolina , mahogany, and other shrubs, and occasional Arizona cypress mixed in, but definitely closed canopy. Rhyolitic soils may also support same kind of stands; not much underneath, but closed canopy. The sandstone- and basalt-derived soils appear more open; a closed canopy is another anomaly.","Community dominated by herbaceous vegetation with widely scattered shrubs. Herbaceous vegetati on seldom more than 20% cover. Extended wet periods were modeled as wind/weather/stress. During a drought vegetation will follow an alternative succession pathway to class C.","Discontinuous grass patches, and higher shrub canopy cover than in class A. Extended wet periods were modeled as wind/weather/stress. D uring extended drought periods, vegetation will shift to class C.","Grass is lacking, and shrub canopy cover is even higher than class B. Extended wet periods were modeled as wind/weather/stress. The v egetation eventually moves back to class B through succession , but d rought will maintain this class. Fire would not carry in this class. This seems to be the class that occurs due to drought.","Early succession, usually after moderately frequent stand - replacement fires; grasses and forbs dominant. &lt;10% shrub cover, with grasses/forbs dominant in extensive openings. (Some question whether or not  mountain muhly was abundant.) Climate - - drought, above - average precipitation, late - spring frosts, etc ., are major factors in the time it takes for this class to succeed. This is a model of succession from shrubland to grassland. It is uncertain if that works for New Mexico -- either this system remains as persistent shrublands or it moves to woodlands rather than grasslands. Reviewers cannot think of a place where there has been such a grassland dynamic. This type can be much more prevalent adjacent to grasslands going north into Colorado and Wyoming, but in New Mexico, that might be relatively rare.","This class contains &gt;10% shrub cover (i.e., line intercept method) by weakly sprouting and seed - producing shrubs; grasses/forbs dominant in scattered openings.","There is &gt;30% shrub cover depending on location/timing, with over - mature shrubs as patchy dominant overstory (e.g., in rock outcrops); grasses/forbs dominant in extensive openings. All age classes are present but dominated by over - mature shrubs (e.g., in rocky draws). Other indicator species might include Shizachyrium  scoparium , Bouteloua  curtipendula , and Pseudoroegeneria  spicata . Some feel that some of the tree species might occur in this class historically - - such as Pinus ponderosa , Juniperus  scopulorum , and Pinus edulis -- and that they might indicate succession instead of encroachment ( Sprock , pers onal communication ). There might be very scattered trees in this class.","Class A represents an array of early s pecies. Vegetation is very sparse . Biomass is low. This stage corresponds to the ESDs of annuals, early perennials, and blowouts. Class A represents a mix of annuals and forbs, some perennial grasses, and areas of sparse vegetative cover and bare sand, including blowouts and sand draws. For most years, this stage would be small patches. However, after extended drought, this stage could cover a significant portion of the area. (Some of the modelers wanted to have a separate blowout stage with &lt; 10% canopy cover; however, because that is not mappable, we did not create that stage - - especially because there are blowout areas in current conditions, which would not be picked up if we defined our class with &lt; 10% cover. Therefore, this C lass A contains the blowout stage lumped in with the other annual and forbs and perennial grasses.) Drought and fire might have been one or two of the main causes of this condition , so the area occupied by this class is likely to have varied considerably, expanding during severe, extended droughts and contracting during wetter years. The persistence of this class depends on continual disturbance that inhibits the establishment of vegetation. Long-term extensive drought as a single factor could lead to this stage. Otherwise, a combination of disturbances such as fire, hailstorms (questionable), and continuous grazing (combined?) could cause a transition to this stage. L ow fuel levels and areas of open sand tend to prevent fire spread and make fire infrequent . If this class is bare sand and there's a blowout, this stage could last decades. But what typically comes in, since we are combining this with the forbs and annuals, is lemon scurfpea and other forbs, needle - and - thread, indian  ricegrass , sixweeks fescue, and ambiguous penstemon. Other indicator species: blowout grass and Pacific peavine . There might be some shrubs coming in here. There might be some prairie sandreed and bluestem. For a moderate blowou t, this stage could last a short time up to a few decades . This will depend on size of blowout, type of grazing, and climatic conditions. So this year-end covers part of the wind disturbance and environmental factors. If there are good climatic conditions, this stage can cycle more quickly, so this was modeled as alternate succes sion . What creates the annual - forb - dominated stage is the movement of sand dunes and scouring from major wind events. Wind events are a normal occurrence. If there is drought, fire , and abnormal disturbance, wind events can create more or larger blowouts. Wind/weather stress in this class is referring to high - wind events , which occur normally. We're describing it in terms of area - - i.e. , 10% of area affected. But the fire and drought combined (not separately) is what creates the conditions to have the wind affect the class and reset it. Native grazers can accelerate or maintain this stage or slow the successional process, depending on when the grazing occurs and intensity. All of these effects occur naturally and frequently.","Class B corresponds to the ESD blue grama /sand sagebrush class. This is the sand sage and perennial grasses stage. Class B is the mid-biomass stage. There is much variation in this class. As per NRCSâ€™s ESD, the blue grama sand sagebrush community might evolve with continuous grazing without adequate recovery periods between grazing events during the growing season. Blue grama and sand sagebrush are the dominant species. Other indicator species: prairie sandreed , switchgrass, sand dropseed , and possibly yellow indiangrass , sandsage , leadplant (questioned by some), w estern sandcherry , needle - and - thread , and many forbs. Sand bluestem, prairie sandreed , yellow i ndiangrass , switchgrass, western sandcherry , and leadplant are less in frequency and production than in C lass C. Red threeawn , slimflower  scurfpea , hairy goldaster , croton, western ragweed, stickleaf , lupine, loco , and milkvetch can also be present. Canopy cover for this class can truly start at &lt; 20% cover, but for mapping rules, we changed it to 20% cover. So on the ground , please note that canopy cover could be very low even in this class. Canopy cover can vary dramatically, however, due to grazing, hail, etc. Upper - layer lifeform is shrubs, but &lt;10% cover historically. Currently, you will see lots more shrub cover - - up to 20% cover - - which would be uncharacteristic. This class transitions to the high biomass sand bluestem sandsage stage after a few years under the right conditions and disturbance patterns and processes. However, under the right conditions, it can move out more quickly. T herefore, alternate success ion was modeled as well , bringing this class to C lass C, the high biomass stage. For this stage, fires were modeled as occurring but not causing a transition, as the sage and grasses resprout quickly. There was much native grazing occurring every year throughout all of the classes on the landscape. Not much documentation on this , though. Grazing periods were very short , and recovery periods could be 6mo-1yr . Herds followed green - up and rains. This doesn't remove the grasses. This recycles the nutrients and doesn't change species composition (as does continuous grazing currently). In terms of cover, probably not much departure. In terms of species - - departure - - more sandsage , blue grama today. Probably more shrub cover today. Currently, there is probably much of this stage on the landscape -- blue grama / sandsage , although that was not necessarily the situation historically.","Class C represents the historical climax plant community in choppy sands/sands from NRCS ESDs, in part. This class corresponds to the ESD sand bluestem/prairie sandreed , w estern sandcherry plant communities. The historic climax plant community consists of tall warm - season grasses. This is the bluestem, sagebrush, prairie sandreed perennial grass stage mosaic. Other species include sand dropseed , threeawn , switchgrass , and Indian ricegrass . As per NRCSâ€™s ESD, sub-dominant grasses include needle - and - thread, blue grama , and little bluestem. Significant forbs and shrubs are P acific peavine , evening primrose, prairie clovers, leadplant , and western sandcherry . As per NRCS ESD, the potential vegetation is ~ 70-85% grasses and grass-like plants, 8-15% forbs , and 7-15% woody plants. Class C is the high biomass class. This plant community evolved with grazing by large herbivores (NRCS). Evenly dispersed bison (and other herbivores) were probably part of the grazing history in some years. Large herbivores typically congregate more in herds during droughts and disperse when resources are more widely ava ilable (wet years). Regular g razing was modeled frequently, and heavy g razing was also modeled as occurring on 5% of the class each year , causing a transition to C lass B. Fire and continuous grazing combined without adequate recovery periods could shift this community toward the annual and forb stage or the perennial grass and sage stage. That would be the only way to remove the bluestem component temporarily. Lack of fire and grazing could shift this community to an uncharacteristic excessive litter plant community.","Post-replacement sprouts to approximately 2ft high. Dense resprouting with high number of stems per acre. Abundant grass and forb cover.","Three to 6ft tall to 3in in DBH. Stem mortality due to competition , with slight decrease in understory species due to shading. Grass and forbs declining.","The late development stages are combined into one stage.  Greater than 6ft tall and &gt;3in in DBH. Small stands &lt;30m with open canopy and usually scattered throughout a grassland or shrub type (Brown 1958), as well as nearly continuous canopy cover, 2ha+, with only occasional openings (Brown 1958). This effort models Gambel oak as a climax species. Some ponderosa pine can also come into this stage. Some feel that ponderosa pine is present in this stage (Sprock, pers . comm . ).","Grass/forb/shrub/seedling - - usually post-fire. This class succeeds to B, a mid-open stage after approximately 70yrs. (However, Floyd et al. [ 2000 ] in a Mesa Verde area suggest much longer recovery of woody vegetation if too large an area is killed. Recruitment is even more episodic in response to optimal climate conditions than in ponderosa.)","Mid-developmen t, open pinyon-juniper stand with mixed shrub/herbaceous community in understory. Review for MZ27 suggested that max imum canopy cover might be as low as 20%.","Mid-development, dense pinyon-juniper woodland; understory being lost. Review for MZ27 suggested that max imum canopy cover might be as low as 30%.","Dense, old-growth stands with multiple layers. Late-development, closed pinyon-juniper forest. May have all-aged, multi-storied structure. Moderate mortality within stand. Occasional shrubs with few grasses and forbs and often much rock. Review for MZ27 suggested that canopy cover might be lower, e.g. , 11-35%.","Late-development, open pinyon -juniper stand with â€œsavanna-likeâ€ appearance; mixed grass/  shrub/herbaceous community.","Imm ediate post - fire resprouts during growing season. Few forbs, although it is possible that post-fire forb richness could be higher than C lass B. Annuals dependent upon moisture (as are the other species). If there were a wet year, this class might cycle out within 2-3yrs. However, that would be the quickest response. More often, drier years occur, so the cycle would take 7-10yrs+. This is different than the MZ25 N ew Mexico model due to different moisture, gradients. Indicator species will be soil - dependent (see Veg Description). Other indicator species might be threeawn , sand dropseed , and b lue grama . Native grazers might keep this class in this stage. Drought enhances the grazing effect. So it wouldn't move out of this class as quickly. Currently, today there would probably be more in C lass A than historically, due to continuous grazing and issue identified above. There's probably ~ 40% in this class currently.","Moderate to dense mid - to tallgrass species. Grass, shrubs, forbs , and annuals dependent upon moisture. Canopy closure dependent on soils, moisture, grazing , and percent rock. Minimum height is probably around 0.2-0.3m in dry years. On heavier soils - - western wheatgrass, green needlegrass , four-wing saltbush, winterfat . On sandy, shallow, rocky sites - - big bluestem, little bluestem, switchgrass, yellow indiangrass , and sideoats  grama .","Instead of calling the classes early, mid , and late, which do not actually apply in shortgrass prairie  and the different stages that we are describing, we are calling all the stages â€œmid-development.â€ Succession in a grassland system does not abide by typical definitions as in a forested community. The stages of the grassland are created and/or maintained by disturbances or lack thereof. Class A is the low biomass (0-1 in based on the Robel pole density/visual obstruction method), heavy disturbance - dependent community. It combines two types of communities. One consists of the high - cover blue grama / buffalo grass sod that looks like a golf course (high cover in patches). The other is the low - cover bare soil, Aristida , and forb stage, which could have taller grasses than the sod, but they are spaced apart due to bare soil between. See biomass in Milchunas et al. (1994) and Milchunas and Lauenroth (1989) and basal cover for sod class by point frame in Milchunas et al. (1989). There are relatively few cool - season grasses in this stage. There is always blue grama in this stage, as in the others. Cactus is present (and could even be a dominant in the C lass A sod depending on soil type). Aristida is present, which increases with prairie dog colonies. Annual grasses - - sixweeks fescue, r ed threeawn, ragweed, annual forbs. ( Currently, you would see non-native annuals in this class , such as cheatgrass and kochia - - only in the high biomass type , annuals and exotics are actually less abundant in the sod type than any other class [ Milchunas et al. 1989; Milchunas and Lauenroth 1989; Milchunas et al. 1988 ] ; the landscape might also have non-natives of bindweed on prairie dog towns today, but not historically. ) On loamier or sandier sites, there is sand dropseed. For the southern N ew Mexico version, other indicator species are lemonweed, showy goldeneye, verbena. Original draft model indicator species for the prairie dog stage also included ARPUL, AMPS, SPCR. Original indicator species for the sod stage also included OPPO. There are low - intensity fires in the low - biomass , high - cover sod and relatively rare fire in the low - biomass , low - cover bare soil. Fires are spotty through here and not as frequent as in other stages. This stage is produced by heavy grazing and long-term prairie dog colonies , which will maintain this stage long  term. This stage can also be maintained by heavy continuous grazing if the area is near water. Also ,  if an area is burned and grazed, the high - cover version of this stage will be reached if not continuously grazed. Grazing that gives adequate plant recovery periods occurs in this stage. It is thought that there should be ~ 20-30% of this stage historically, based on historical prairie dog communities combined with bison grazing (Gober 2000; David Augustine, USFS, pers onal comm unication ). However, the viewpoint that created this model feels that there is very little of this stage on the landscape today. Prairie dog plague today would also not allow this class to be maintained for long. Another opposing viewpoint feels that the sod portion of this class would have been a very small, localized condition historically and that today it would be very prevalent. This view states that historically there would just have been small areas of continuous grazing or migration corridors. This stage would also include buffalo wallows (Harvey Sprock, Terri Schulz, Rich Sterry et al., pers onal comm unication ). (Today, it might be go-back-cropland.) It is also thought, however, that today there are extensive areas of abandoned D ust B owl cropland that now have blue grama sod with low cover and productivity. The surface soil horizon is eroded by wind and is no longer apparent. Bedrock or subsoil/parent material is exposed in some areas (Harvey Sprock, Terri Schulz, Rich Sterry et al., pers onal comm unication ). This view is questioned, however, by others. Class A was originally modeled in the draft model as the prairie dog stage , as it would take a long time to move out of this stage due to the prairie dog communities. Class C was originally modeled as the sod class. Also the N ew Mexico draft older version had a cover of 0-20% for the prairie-dog-type  stage and the sod class with a cover of 41-50%.","Instead of calling the classes early, mid , and late, which do not actually apply in shortgrass prairie and the different stages that we are describing, we are calling all of the stages â€œmid-development.â€ Succession in a grassland system does not abide by typical definitions as in a forested community. The stages of the grassland are created and/or maintained by disturbances or lack thereof. Class B is the mid - biomass (2-4 in based on the Robel pole density/visual obstruction method), mid - cover stage. See biomass in Milchunas et al. (1994) and Milchunas and Lauenroth (1989). This stage again consists of blue grama. Cactus is often present and could even be the second dominant depending on soil type. There are less needle - and - thread and western wheatgrass than in C lass C. This also includes the â€œhistoric climax plant communityâ€ with blue grama, buffalo  grass,  western wheatgrass, galleta grass, green needlegrass (not in N ew Mexico much), fringed sage, New Mexico feather grass in the south. Historically, there would have been more midgrasses (Harvey Sprock et al., pers onal comm unication ). In N ew Mexico , there would be scatterings of black grama, vine mesquite on heavier soils. G razing that allows adequate plant recovery periods occurs and  can maintain this state, but heavy grazing can cause a transition to the e arly stage. The current modelers (Augustine et al . ) feel that currently most of the landscape is in C lass B. However, another viewpoint feels that there probably is not much of C lass B on the landscape today. Scattered shrubs may be present (up to 15%, maybe up to 1m) â€“ four - wing, winterfat. There might be scattered cholla in MZ27, east of Colorado Springs. Once cholla gets thick, shifts to another BpS. Note that the draft N ew Mexico southern version of the Historic Climax Plant Community (HCPC) class had a cover of 21-40%.","Instead of calling the classes early, mid , and late, which do not actually apply in shortgrass prairie and the different stages that we are describing, we are calling all of the stages â€œmid-development.â€ Succession in a grassland system does not abide by typical definitions as in a forested community. The stages of the grassland are created and/or maintained by disturbances or lack thereof. Class C is the high - biomass (4+ in based on the Robel pole density/visual obstruction method), high - cover stage. See biomass in Milchunas et al. (1994) and Milchunas and Lauenroth (1989) and basal cover in Milchunas et al. (1989). The same grasses are present as the previous. However, there are also more C3 perennial cool - season grasses. (However, some have questioned the increase in cool-season grasses with succession as being speculative. There are definite edaphic differences. Gravelly sites in N ew Mexico often support H . neomexicana even under intense grazing regimes.) Blue grama is still present and dominant. Needle - and - thread, galleta grass , and also western wheatgrass are more prominent. Note also that more annuals and exotics occur in the ungrazed than in the heavily grazed sod class (Milchunas et al. 1989; Milchunas et al. 1992). Scattered shrubs may be present - - snakeweed, prickly pear cactus. This stage is arrived at through lack of fire and grazing ; although , while already in this stage, fire would be more likely to occur due to the increased biomass. Fire and grazing together can cause a state transition. Fire alone may not cause a transition but can especially on coarser - textured soils. Prairie dogs are unlikely to occur in this class, but when they do, they will occur as a patch within the matrix and can cause a state transition. As per the current modelers (Aug u stine et al . ), it is thought that there should be ~ 10-20% of this stage historically. However, there might be very little of this stage on the landscape today, although some feel that there might be a large amount of it on the landscape today in N ew Mexico .","Immediate post - disturbance, grasses, sedges, rushes, seedling willow , and cottonwood. Early successional stage has high value for native grazers. Grass species vary across the MZ , depending upon soil a nd other factors. Wind/weather and fl ooding occur but do not cause a transition. After leaf drop, could have had fires from adjacent systems ;  b ut , not modeled because of uncertainty. Western cottonwood more susceptible to fire than eastern cottonwood around K ansas , etc.","Open canopy with very dense understory of herbaceous vegetation. Improved infiltration and increased percolation and groundwater recharge lead to more biomass production an d soil retention.  Flooding can facilitate succession.  Mixed fire can also occur and does not caus e a transition.","Dominated by l arge cottonwood , with scattered shrubs and less of the herbaceous component. Starting to include some dead standing and down ed woody materials. Localized erosion may be increasing as mature cottonwood fall ; uprooting of root masses expose s bare soil. Herbaceous component becoming less evenly distributed in the understory. Primary disturbance is flooding , which occurs very infrequently but removes everything. Grazing can occur at various stages. Senescence also occur s and is incorporated into grazing. Grazing is an important component, infrequently causing a transition, and more frequently just occurring and not causing a transition , which occurs for 5% of this class each year. Smaller floods allow regeneration. Just scours landscape and creates bare soil for seedlings to restart.  Mixed fire also  occurs but does not caus e a transition.  Historically, the range in this class might have been 30-40%."]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Biophysical Setting<\/th>\n      <th>Model Code<\/th>\n      <th>Class<\/th>\n      <th>Class Label<\/th>\n      <th>Description<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"targets":3,"render":"function(data, type, row, meta) {\n      return type === 'display' && data.length > 50 ? \n        '<span title=\"' + data + '\">' + data.substr(0, 50) + '...<\/span>' : data;\n    }"},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Biophysical Setting","targets":1},{"name":"Model Code","targets":2},{"name":"Class","targets":3},{"name":"Class Label","targets":4},{"name":"Description","targets":5}],"autoWidth":true,"lengthMenu":[[5,10,-1],["5","10","All"]],"order":[],"orderClasses":false}},"evals":["options.columnDefs.0.render"],"jsHooks":[]}</script>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

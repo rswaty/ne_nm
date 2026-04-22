@@ -1,0 +1,10 @@
+7054,214,255,181,255,Southern Rocky Mountain Ponderosa Pine Woodland
+7059,121,255,94,255,Southern Rocky Mountain Pinyon-Juniper Woodland
+7086,117,87,61,255,Rocky Mountain Lower Montane-Foothill Shrubland
+7107,245,175,54,255,Rocky Mountain Gambel Oak-Mixed Montane Shrubland
+7111,150,123,89,255,Western Great Plains Mesquite Shrubland
+7119,121,255,94,255,Southern Rocky Mountain Juniper Woodland and Savanna
+7127,130,101,72,255,Inter-Mountain Basins Semi-Desert Shrub-Steppe
+7147,255,157,77,255,Western Great Plains Foothill and Piedmont Grassland
+7149,255,142,66,255,Western Great Plains Shortgrass Prairie
+7207,255,241,140,255,Central Mixedgrass Prairie Shrubland

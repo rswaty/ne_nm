@@ -1,0 +1,11 @@
+1485,137,68,101,255,Rocky Mountain Lower Montane-Foothill Shrubland
+1163,137,68,101,255,Rocky Mountain Lower Montane-Foothill Shrubland
+1492,135,86,20,255,Southern Rocky Mountain Juniper Woodland and Savanna
+1168,135,86,20,255,Southern Rocky Mountain Juniper Woodland and Savanna
+1480,183,138,46,255,Southern Rocky Mountain Pinyon-Juniper Woodland
+1156,183,138,46,255,Southern Rocky Mountain Pinyon-Juniper Woodland
+1500,102,153,205,255,Western Great Plains Floodplain Systems
+1496,137,205,102,255,Western Great Plains Foothill and Piedmont Grassland
+387,137,205,102,255,Western Great Plains Foothill and Piedmont Grassland
+1497,205,205,102,255,Western Great Plains Shortgrass Prairie
+386,205,205,102,255,Western Great Plains Shortgrass Prairie
