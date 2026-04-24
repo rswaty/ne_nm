@@ -1,6 +1,16 @@
 <PAMDataset>
   <PAMRasterBand band="1">
     <Description>VALUE</Description>
+    <Histograms>
+      <HistItem>
+        <HistMin>11</HistMin>
+        <HistMax>2718</HistMax>
+        <BucketCount>256</BucketCount>
+        <IncludeOutOfRange>1</IncludeOutOfRange>
+        <Approximate>0</Approximate>
+        <HistCounts>54060|6134|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|97|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|2|18005|19828|15378|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|5477|3228041|18756513|530051|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|104516</HistCounts>
+      </HistItem>
+    </Histograms>
     <GDALRasterAttributeTable tableType="thematic">
       <FieldDefn index="0">
         <Name>VALUE</Name>
@@ -48261,5 +48271,17 @@
         <F>0.498039</F>
       </Row>
     </GDALRasterAttributeTable>
+    <Metadata>
+      <MDI key="STATISTICS_MINIMUM">11</MDI>
+      <MDI key="STATISTICS_MAXIMUM">2718</MDI>
+      <MDI key="STATISTICS_MEAN">1495.1543815755</MDI>
+      <MDI key="STATISTICS_STDDEV">113.97121582299</MDI>
+      <MDI key="STATISTICS_MEDIAN">1486.580392</MDI>
+      <MDI key="STATISTICS_COUNT">22738102.000000</MDI>
+      <MDI key="STATISTICS_SKIPFACTORX">1</MDI>
+      <MDI key="STATISTICS_SKIPFACTORY">1</MDI>
+      <MDI key="STATISTICS_EXCLUDEDVALUES"></MDI>
+      <MDI key="STATISTICS_COVARIANCES">12989.43803616951</MDI>
+    </Metadata>
   </PAMRasterBand>
 </PAMDataset>
